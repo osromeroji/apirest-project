@@ -1,9 +1,13 @@
 package com.mercadona.springboot.backend.apirest.controllers;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataAccessException;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -32,8 +36,23 @@ public class ProductRestController {
 	}
 	
 	@GetMapping("/products/{id}")
-	public Product show(@PathVariable Long id){
-		return productService.findById(id);
+	public ResponseEntity<?> show(@PathVariable Long id){
+		Product product = null;
+		Map<String, Object> response = new HashMap<>();
+		
+		try {
+			product = productService.findById(id);
+		} catch (DataAccessException e) {
+			response.put("message", "Error al realizar la consulta en la base de datos.");
+			response.put("error", e.getMessage().concat(" : ").concat(e.getMostSpecificCause().getMessage()));
+			return new ResponseEntity<Map<String, Object>>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+			
+		if (product == null) {
+			response.put("message", "El cliente con ID " .concat(id.toString().concat(" no existe en la base de datos.")));
+			return new ResponseEntity<Map<String, Object>>(response, HttpStatus.NOT_FOUND);
+		}
+		return new ResponseEntity<Product>(product, HttpStatus.OK);
 	}
 	
 	@PostMapping("/products")
