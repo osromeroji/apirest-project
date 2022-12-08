@@ -49,7 +49,7 @@ public class ProductRestController {
 		}
 			
 		if (product == null) {
-			response.put("message", "El cliente con ID " .concat(id.toString().concat(" no existe en la base de datos.")));
+			response.put("message", "El producto con ID " .concat(id.toString().concat(" no existe en la base de datos.")));
 			return new ResponseEntity<Map<String, Object>>(response, HttpStatus.NOT_FOUND);
 		}
 		
@@ -69,7 +69,7 @@ public class ProductRestController {
 			return new ResponseEntity<Map<String, Object>>(response, HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 		
-		response.put("message", "El cliente ha sido creado con éxito!");
+		response.put("message", "El producto ha sido creado con éxito!");
 		response.put("product", newProduct);
 		
 		return new ResponseEntity<Map<String, Object>>(response, HttpStatus.CREATED);
@@ -82,7 +82,7 @@ public class ProductRestController {
 		Map<String, Object> response = new HashMap<>();
 		
 		if (currentProduct == null) {
-			response.put("message", "Error: No se pudo editar el cliente porque el cliente con ID " .concat(id.toString().concat(" no existe en la base de datos.")));
+			response.put("message", "Error: No se pudo editar el producto porque el rpoducto con ID " .concat(id.toString().concat(" no existe en la base de datos.")));
 			
 			return new ResponseEntity<Map<String, Object>>(response, HttpStatus.NOT_FOUND);
 		}
@@ -91,21 +91,33 @@ public class ProductRestController {
 			currentProduct.setEan(product.getEan());
 			updatedProduct = productService.save(currentProduct);
 		} catch (DataAccessException e) {
-			response.put("message", "Error al actualizar el cliente en la base de datos.");
+			response.put("message", "Error al actualizar el producto en la base de datos.");
 			response.put("error", e.getMessage().concat(" : ").concat(e.getMostSpecificCause().getMessage()));
 			
 			return new ResponseEntity<Map<String, Object>>(response, HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 		
-		response.put("message", "El cliente ha sido actualizado con éxito!");
+		response.put("message", "El producto ha sido actualizado con éxito!");
 		response.put("product", updatedProduct);
 		
 		return new ResponseEntity<Map<String, Object>>(response, HttpStatus.CREATED);
 	}
 	
 	@DeleteMapping("/products/{id}")
-	@ResponseStatus(HttpStatus.NO_CONTENT)
-	public void delete(@PathVariable Long id){ 
-		productService.delete(id);
+	public ResponseEntity<?> delete(@PathVariable Long id){ 
+		Map<String, Object> response = new HashMap<>();
+		
+		try {
+			productService.delete(id);
+		} catch (DataAccessException e) {
+			response.put("message", "Error al eliminar el producto de la base de datos. ");
+			response.put("error", e.getMessage().concat(": ").concat(e.getMostSpecificCause().getMessage()));
+			
+			return new ResponseEntity<Map<String, Object>>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+		
+		response.put("mensaje", "El producto ha sido eliminado con éxito");
+		
+		return new ResponseEntity<Map<String, Object>>(response, HttpStatus.OK);
 	}
 }
