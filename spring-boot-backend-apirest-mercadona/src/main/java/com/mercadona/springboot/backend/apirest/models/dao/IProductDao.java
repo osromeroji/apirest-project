@@ -4,6 +4,6 @@ import org.springframework.data.repository.CrudRepository;
 
 import com.mercadona.springboot.backend.apirest.models.entities.Product;
 
-public interface IProductDao extends CrudRepository<Product, Long>{
+public interface IProductDao extends CrudRepository<Product, Long> {
 
 }
