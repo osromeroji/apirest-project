@@ -52,6 +52,7 @@ public class ProductRestController {
 			response.put("message", "El cliente con ID " .concat(id.toString().concat(" no existe en la base de datos.")));
 			return new ResponseEntity<Map<String, Object>>(response, HttpStatus.NOT_FOUND);
 		}
+		
 		return new ResponseEntity<Product>(product, HttpStatus.OK);
 	}
 	
@@ -70,15 +71,36 @@ public class ProductRestController {
 		
 		response.put("message", "El cliente ha sido creado con éxito!");
 		response.put("product", newProduct);
+		
 		return new ResponseEntity<Map<String, Object>>(response, HttpStatus.CREATED);
 	}
 	
 	@PutMapping("/products/{id}")
-	@ResponseStatus(HttpStatus.CREATED)
-	public Product update(@RequestBody Product product, @PathVariable Long id){ //RequestBody because it is in a JSON format.
+	public ResponseEntity<?> update(@RequestBody Product product, @PathVariable Long id){ //RequestBody because it is in a JSON format.
 		Product currentProduct = productService.findById(id);
-		currentProduct.setEan(product.getEan());
-		return productService.save(currentProduct);
+		Product updatedProduct = null;
+		Map<String, Object> response = new HashMap<>();
+		
+		if (currentProduct == null) {
+			response.put("message", "Error: No se pudo editar el cliente porque el cliente con ID " .concat(id.toString().concat(" no existe en la base de datos.")));
+			
+			return new ResponseEntity<Map<String, Object>>(response, HttpStatus.NOT_FOUND);
+		}
+		
+		try {
+			currentProduct.setEan(product.getEan());
+			updatedProduct = productService.save(currentProduct);
+		} catch (DataAccessException e) {
+			response.put("message", "Error al actualizar el cliente en la base de datos.");
+			response.put("error", e.getMessage().concat(" : ").concat(e.getMostSpecificCause().getMessage()));
+			
+			return new ResponseEntity<Map<String, Object>>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+		
+		response.put("message", "El cliente ha sido actualizado con éxito!");
+		response.put("product", updatedProduct);
+		
+		return new ResponseEntity<Map<String, Object>>(response, HttpStatus.CREATED);
 	}
 	
 	@DeleteMapping("/products/{id}")
