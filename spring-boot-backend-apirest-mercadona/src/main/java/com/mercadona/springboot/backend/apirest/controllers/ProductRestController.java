@@ -56,9 +56,21 @@ public class ProductRestController {
 	}
 	
 	@PostMapping("/products")
-	@ResponseStatus(HttpStatus.CREATED)
-	public Product create(@RequestBody Product product){ //RequestBody because it is in a JSON format.
-		return productService.save(product);
+	public ResponseEntity<?> create(@RequestBody Product product){ //RequestBody because it is in a JSON format.
+		Product newProduct = null;
+		Map<String, Object> response = new HashMap<>();
+		
+		try {
+			newProduct = productService.save(product);
+		} catch (DataAccessException e) {
+			response.put("message", "Error al realizar el insert en la base de datos.");
+			response.put("error", e.getMessage().concat(" : ").concat(e.getMostSpecificCause().getMessage()));
+			return new ResponseEntity<Map<String, Object>>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+		
+		response.put("message", "El cliente ha sido creado con éxito!");
+		response.put("product", newProduct);
+		return new ResponseEntity<Map<String, Object>>(response, HttpStatus.CREATED);
 	}
 	
 	@PutMapping("/products/{id}")

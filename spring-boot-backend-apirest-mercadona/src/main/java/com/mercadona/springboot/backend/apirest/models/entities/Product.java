@@ -17,7 +17,7 @@ public class Product implements Serializable {
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Long id;
 	
-	@Column(length=13)
+	@Column(nullable=false, length=13, unique=true)
 	private Long ean;
 
 	public Long getId() {
