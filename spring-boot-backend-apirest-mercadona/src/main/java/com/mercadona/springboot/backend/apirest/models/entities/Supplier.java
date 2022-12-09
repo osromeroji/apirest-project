@@ -16,6 +16,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import jakarta.persistence.Transient;
 
 @Entity
 @Table(name = "proveedores")
@@ -30,9 +31,10 @@ public class Supplier implements Serializable {
 
 	private String name;
 
-	@JsonManagedReference
-	@OneToMany(mappedBy = "supplier", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-	private List<Product> products = new ArrayList<>();
+	/*@JsonManagedReference
+	@OneToMany(mappedBy = "supplier", cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
+	@Transient
+	private List<Product> products = new ArrayList<>();*/
 	
 	public Supplier() {
 		
@@ -62,13 +64,13 @@ public class Supplier implements Serializable {
 		this.name = name;
 	}
 
-	public List<Product> getProducts() {
+	/*public List<Product> getProducts() {
 		return products;
 	}
 
 	public void setProducts(List<Product> products) {
 		this.products = products;
-	}
+	}*/
 
 	/**
 	 * 

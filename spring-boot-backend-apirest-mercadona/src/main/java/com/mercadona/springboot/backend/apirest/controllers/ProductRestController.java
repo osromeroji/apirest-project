@@ -20,7 +20,9 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.mercadona.springboot.backend.apirest.models.entities.Product;
+import com.mercadona.springboot.backend.apirest.models.entities.Supplier;
 import com.mercadona.springboot.backend.apirest.models.services.IProductService;
+import com.mercadona.springboot.backend.apirest.models.services.ISupplierService;
 
 @CrossOrigin(origins= {"http://localhost:4200"})
 @RestController
@@ -29,6 +31,9 @@ public class ProductRestController {
 	
 	@Autowired
 	private IProductService productService;
+	
+	@Autowired
+	private ISupplierService supplierService;
 
 	@GetMapping("/products")
 	public List<Product> index() {
@@ -62,6 +67,8 @@ public class ProductRestController {
 		Map<String, Object> response = new HashMap<>();
 		
 		try {
+			Supplier s = supplierService.findById(product.getSupplier().getId());
+			
 			newProduct = productService.save(product);
 		} catch (DataAccessException e) {
 			response.put("message", "Error al realizar el insert en la base de datos.");
@@ -91,7 +98,7 @@ public class ProductRestController {
 			currentProduct.setName(product.getName());
 			currentProduct.setDescription(product.getDescription());
 			currentProduct.setCode(product.getCode());
-			currentProduct.setSupplier(product.getSupplier());
+			//currentProduct.setSupplier(product.getSupplier());
 			updatedProduct = productService.save(currentProduct);
 		} catch (DataAccessException e) {
 			response.put("message", "Error al actualizar el producto en la base de datos.");

@@ -69,7 +69,7 @@ public class SupplierRestController {
 			return new ResponseEntity<Map<String, Object>>(response, HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 		
-		response.put("message", "El producto ha sido creado con éxito!");
+		response.put("message", "El proveedor ha sido creado con éxito!");
 		response.put("supplier", newSupplier);
 		
 		return new ResponseEntity<Map<String, Object>>(response, HttpStatus.CREATED);
@@ -90,7 +90,7 @@ public class SupplierRestController {
 		try {
 			currentSupplier.setCode(supplier.getCode());
 			currentSupplier.setName(supplier.getName());
-			currentSupplier.setProducts(supplier.getProducts());
+			//currentSupplier.setProducts(supplier.getProducts());
 			updatedSupplier = supplierService.save(currentSupplier);
 		} catch (DataAccessException e) {
 			response.put("message", "Error al actualizar el proveedor en la base de datos.");
