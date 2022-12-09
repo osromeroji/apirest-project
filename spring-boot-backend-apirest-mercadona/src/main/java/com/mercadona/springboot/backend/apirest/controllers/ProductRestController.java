@@ -88,7 +88,10 @@ public class ProductRestController {
 		}
 		
 		try {
-			currentProduct.setEan(product.getEan());
+			currentProduct.setName(product.getName());
+			currentProduct.setDescription(product.getDescription());
+			currentProduct.setCode(product.getCode());
+			currentProduct.setSupplier(product.getSupplier());
 			updatedProduct = productService.save(currentProduct);
 		} catch (DataAccessException e) {
 			response.put("message", "Error al actualizar el producto en la base de datos.");
