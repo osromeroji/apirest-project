@@ -3,6 +3,7 @@ package com.mercadona.springboot.backend.apirest.models.entities;
 import java.io.Serializable;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -34,6 +35,7 @@ public class Product implements Serializable {
 	
 	@ManyToOne()
 	@JoinColumn(name="supplier_id")
+	@JsonIgnore
 	private Supplier supplier;
 	
 	public Product() {
