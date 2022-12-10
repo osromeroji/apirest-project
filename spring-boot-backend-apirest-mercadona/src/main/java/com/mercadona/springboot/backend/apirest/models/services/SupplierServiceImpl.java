@@ -26,6 +26,12 @@ public class SupplierServiceImpl implements ISupplierService{
 	public Supplier findById(Long id) {
 		return supplierDao.findById(id).orElse(null);
 	}
+	
+	@Override
+	@Transactional(readOnly = true)
+	public List<Supplier> findByCode(String code) {
+		return supplierDao.findByCode(code);
+	}
 
 	@Override
 	@Transactional

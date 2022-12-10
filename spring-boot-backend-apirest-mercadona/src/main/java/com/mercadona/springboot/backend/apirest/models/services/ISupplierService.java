@@ -9,6 +9,8 @@ public interface ISupplierService {
 	public List<Supplier> findAll();
 
 	public Supplier findById(Long id);
+	
+	public List<Supplier> findByCode(String code);
 
 	public Supplier save(Supplier supplier);
 
