@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.mercadona.springboot.backend.apirest.models.entities.Product;
@@ -68,7 +67,7 @@ public class ProductRestController {
 		
 		try {
 			Supplier s = supplierService.findById(product.getSupplier().getId());
-			
+			product.setSupplier(s);
 			newProduct = productService.save(product);
 		} catch (DataAccessException e) {
 			response.put("message", "Error al realizar el insert en la base de datos.");

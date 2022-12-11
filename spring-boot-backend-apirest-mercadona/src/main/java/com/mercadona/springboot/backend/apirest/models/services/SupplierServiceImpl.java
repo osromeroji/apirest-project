@@ -29,8 +29,8 @@ public class SupplierServiceImpl implements ISupplierService{
 	
 	@Override
 	@Transactional(readOnly = true)
-	public List<Supplier> findByCode(String code) {
-		return supplierDao.findByCode(code);
+	public Supplier findByCode(String code) {
+		return supplierDao.findTopByCode(code);
 	}
 
 	@Override

@@ -18,7 +18,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.mercadona.springboot.backend.apirest.models.entities.Product;
 import com.mercadona.springboot.backend.apirest.models.entities.Supplier;
 import com.mercadona.springboot.backend.apirest.models.services.ISupplierService;
 

@@ -2,8 +2,6 @@ package com.mercadona.springboot.backend.apirest.models.entities;
 
 import java.io.Serializable;
 
-import jakarta.persistence.Entity;
-
 public class EanCode implements Serializable {
 
 	private Supplier supplier;

@@ -8,7 +8,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.mercadona.springboot.backend.apirest.models.dao.IProductDao;
 import com.mercadona.springboot.backend.apirest.models.entities.Product;
-import com.mercadona.springboot.backend.apirest.models.entities.Supplier;
 
 @Service
 public class ProductServiceImpl implements IProductService{
@@ -30,8 +29,8 @@ public class ProductServiceImpl implements IProductService{
 	
 	@Override
 	@Transactional(readOnly = true)
-	public List<Product> findByCode(String code) {
-		return productDao.findByCode(code);
+	public Product findByCode(String code) {
+		return productDao.findTopByCode(code);
 	}
 
 	@Override
